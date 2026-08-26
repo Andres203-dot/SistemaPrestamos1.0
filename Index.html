@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>PrestamosUDC | Gestión de Préstamos</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <a
+            href="#inicio"
+            class="brand"
+        >
+
+            <span class="brand-mark">
+                P
+            </span>
+
+            PrestamosUDC
+
+        </a>
+
+
+        <nav id="navMenu">
+
+            <a href="#inicio">
+                Inicio
+            </a>
+
+            <a href="#clientes">
+                Clientes
+            </a>
+
+            <a href="#prestamos">
+                Préstamos
+            </a>
+
+            <a href="#pagos">
+                Pagos
+            </a>
+
+            <a href="#reportes">
+                Reportes
+            </a>
+
+        </nav>
+
+
+        <div class="nav-right">
+
+            <button
+                class="nav-search"
+                onclick="focusSearch()"
+                title="Buscar"
+            >
+                ⌕
+            </button>
+
+
+            <button
+                class="sign-in"
+                onclick="showMessage('Sesión de administrador activa')"
+            >
+                Administrador
+            </button>
+
+
+            <button
+                class="top-button"
+                onclick="openLoanModal()"
+            >
+                Nuevo préstamo
+            </button>
+
+        </div>
+
+
+        <button
+            class="menu-button"
+            onclick="toggleMenu()"
+        >
+            ☰
+        </button>
+
+    </header>
+
+
+
+    <main>
+
+
+        <!-- =====================================================
+             HERO
+        ====================================================== -->
+
+        <section
+            class="hero"
+            id="inicio"
+        >
+
+            <div class="hero-overlay"></div>
+
+
+            <div class="hero-content">
+
+
+                <!-- CATEGORÍAS -->
+
+                <div class="category-list">
+
+                    <button
+                        class="category active"
+                        onclick="scrollToId('inicio')"
+                    >
+                        Dashboard
+                    </button>
+
+
+                    <button
+                        class="category"
+                        onclick="scrollToId('clientes')"
+                    >
+                        Clientes
+                    </button>
+
+
+                    <button
+                        class="category"
+                        onclick="scrollToId('prestamos')"
+                    >
+                        Préstamos
+                    </button>
+
+
+                    <button
+                        class="category"
+                        onclick="scrollToId('pagos')"
+                    >
+                        Pagos
+                    </button>
+
+
+                    <button
+                        class="category"
+                        onclick="scrollToId('reportes')"
+                    >
+                        Reportes
+                    </button>
+
+
+                    <button
+                        class="category"
+                        onclick="openClientModal()"
+                    >
+                        + Cliente
+                    </button>
+
+                </div>
+
+
+
+                <p class="hero-overline">
+                    SISTEMA DE GESTIÓN FINANCIERA
+                </p>
+
+
+                <h1>
+
+                    Gestiona tus préstamos de forma
+
+                    <br>
+
+                    <span>
+                        simple, visual y eficiente
+                    </span>
+
+                </h1>
+
+
+                <p class="hero-description">
+
+                    Administra clientes, cuotas, pagos y
+                    saldos desde un solo lugar.
+                    Reduce errores y realiza seguimiento
+                    de tu cartera en tiempo real.
+
+                </p>
+
+
+
+                <!-- BUSCADOR -->
+
+                <div class="main-search">
+
+                    <span>
+                        ⌕
+                    </span>
+
+
+                    <input
+                        id="globalSearch"
+                        type="search"
+                        placeholder="Buscar cliente, documento o préstamo..."
+                        oninput="globalSearch(this.value)"
+                    >
+
+
+                    <button
+                        onclick="globalSearch(
+                            document.getElementById('globalSearch').value
+                        )"
+                    >
+                        Buscar
+                    </button>
+
+                </div>
+
+
+
+                <!-- ACCESOS RÁPIDOS -->
+
+                <div class="trending">
+
+                    <span>
+                        Accesos rápidos
+                    </span>
+
+
+                    <button
+                        onclick="filterLoans('Activo')"
+                    >
+                        préstamos activos
+                    </button>
+
+
+                    <button
+                        onclick="filterLoans('Vencido')"
+                    >
+                        vencidos
+                    </button>
+
+
+                    <button
+                        onclick="scrollToId('pagos')"
+                    >
+                        pagos recientes
+                    </button>
+
+
+                    <button
+                        onclick="scrollToId('reportes')"
+                    >
+                        seguimiento
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <small class="hero-credit">
+               
+            </small>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             CONTENIDO
+        ====================================================== -->
+
+        <section class="workspace">
+
+
+            <!-- CABECERA -->
+
+            <div class="workspace-top">
+
+                <div>
+
+                    <p class="overline">
+                        RESUMEN DE CARTERA
+                    </p>
+
+
+                    <h2>
+                        Todo lo importante, de un vistazo.
+                    </h2>
+
+
+                    <p class="muted">
+                        Panel visual para controlar tu operación diaria.
+                    </p>
+
+                </div>
+
+
+                <div class="workspace-actions">
+
+                    <button
+                        class="light-button"
+                        onclick="restoreDemo()"
+                    >
+                        Restaurar demo
+                    </button>
+
+
+                    <button
+                        class="gradient-button"
+                        onclick="openLoanModal()"
+                    >
+                        + Nuevo préstamo
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ESTADÍSTICAS -->
+
+            <div
+                class="stats"
+                id="stats"
+            >
+
+            </div>
+
+
+
+            <!-- =====================================================
+                 CLIENTES
+            ====================================================== -->
+
+            <section
+                class="panel"
+                id="clientes"
+            >
+
+                <div class="panel-heading">
+
+                    <div>
+
+                        <p class="overline">
+                            CLIENTES
+                        </p>
+
+
+                        <h2>
+                            Mis clientes
+                        </h2>
+
+
+                        <p class="muted">
+                            Registra y administra la información
+                            de tus clientes.
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        class="gradient-button"
+                        onclick="openClientModal()"
+                    >
+                        + Agregar cliente
+                    </button>
+
+                </div>
+
+
+
+                <div class="toolbar">
+
+                    <input
+                        id="clientSearch"
+                        class="input"
+                        placeholder="Buscar por nombre, documento o teléfono..."
+                        oninput="renderClients()"
+                    >
+
+
+                    <span
+                        id="clientCounter"
+                        class="counter"
+                    >
+                    </span>
+
+                </div>
+
+
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Cliente
+                                </th>
+
+                                <th>
+                                    Documento
+                                </th>
+
+                                <th>
+                                    Contacto
+                                </th>
+
+                                <th>
+                                    Préstamos
+                                </th>
+
+                                <th>
+                                    Acciones
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody
+                            id="clientsBody"
+                        >
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =====================================================
+                 PRÉSTAMOS
+            ====================================================== -->
+
+            <section
+                class="panel"
+                id="prestamos"
+            >
+
+                <div class="panel-heading">
+
+                    <div>
+
+                        <p class="overline">
+                            CARTERA
+                        </p>
+
+
+                        <h2>
+                            Préstamos
+                        </h2>
+
+
+                        <p class="muted">
+                            Consulta cuotas, intereses,
+                            saldo y estado.
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        class="gradient-button"
+                        onclick="openLoanModal()"
+                    >
+                        + Crear préstamo
+                    </button>
+
+                </div>
+
+
+
+                <div class="toolbar">
+
+                    <div class="filters">
+
+                        <button
+                            class="filter active"
+                            data-filter="Todos"
+                            onclick="filterLoans('Todos')"
+                        >
+                            Todos
+                        </button>
+
+
+                        <button
+                            class="filter"
+                            data-filter="Activo"
+                            onclick="filterLoans('Activo')"
+                        >
+                            Activos
+                        </button>
+
+
+                        <button
+                            class="filter"
+                            data-filter="Vencido"
+                            onclick="filterLoans('Vencido')"
+                        >
+                            Vencidos
+                        </button>
+
+
+                        <button
+                            class="filter"
+                            data-filter="Cancelado"
+                            onclick="filterLoans('Cancelado')"
+                        >
+                            Cancelados
+                        </button>
+
+                    </div>
+
+
+                    <input
+                        id="loanSearch"
+                        class="input compact"
+                        placeholder="Buscar préstamo..."
+                        oninput="renderLoans()"
+                    >
+
+                </div>
+
+
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Préstamo
+                                </th>
+
+                                <th>
+                                    Capital
+                                </th>
+
+                                <th>
+                                    Interés
+                                </th>
+
+                                <th>
+                                    Cuota
+                                </th>
+
+                                <th>
+                                    Saldo
+                                </th>
+
+                                <th>
+                                    Vencimiento
+                                </th>
+
+                                <th>
+                                    Estado
+                                </th>
+
+                                <th>
+                                    Acciones
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody
+                            id="loansBody"
+                        >
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =====================================================
+                 PAGOS
+            ====================================================== -->
+
+            <section
+                class="panel"
+                id="pagos"
+            >
+
+                <div class="panel-heading">
+
+                    <div>
+
+                        <p class="overline">
+                            COBRANZA
+                        </p>
+
+
+                        <h2>
+                            Control de pagos
+                        </h2>
+
+
+                        <p class="muted">
+                            Cada abono actualiza automáticamente
+                            el saldo pendiente.
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        class="gradient-button"
+                        onclick="openPaymentModal()"
+                    >
+                        + Registrar pago
+                    </button>
+
+                </div>
+
+
+
+                <div
+                    class="payment-cards"
+                    id="paymentCards"
+                >
+                </div>
+
+
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Cliente
+                                </th>
+
+                                <th>
+                                    Préstamo
+                                </th>
+
+                                <th>
+                                    Valor
+                                </th>
+
+                                <th>
+                                    Fecha
+                                </th>
+
+                                <th>
+                                    Nota
+                                </th>
+
+                                <th>
+                                    Acción
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody
+                            id="paymentsBody"
+                        >
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =====================================================
+                 REPORTES
+            ====================================================== -->
+
+            <section
+                class="panel"
+                id="reportes"
+            >
+
+                <div class="panel-heading">
+
+                    <div>
+
+                        <p class="overline">
+                            SEGUIMIENTO
+                        </p>
+
+
+                        <h2>
+                            Reportes y recordatorios
+                        </h2>
+
+
+                        <p class="muted">
+                            Visualiza el estado de tu cartera
+                            y las alertas de cobro.
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        class="light-button"
+                        onclick="exportCSV()"
+                    >
+                        ↓ Exportar CSV
+                    </button>
+
+                </div>
+
+
+
+                <div class="report-grid">
+
+
+                    <div class="report-box">
+
+                        <div class="report-title">
+
+                            <strong>
+                                Estado de la cartera
+                            </strong>
+
+                            <span id="reportTotal">
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            id="chart"
+                            class="chart"
+                        >
+                        </div>
+
+
+                        <div class="legend">
+
+                            <span>
+                                <i class="green"></i>
+                                Activos
+                            </span>
+
+                            <span>
+                                <i class="red"></i>
+                                Vencidos
+                            </span>
+
+                            <span>
+                                <i class="gray"></i>
+                                Cancelados
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="report-box">
+
+                        <div class="report-title">
+
+                            <strong>
+                                🔔 Notificaciones
+                            </strong>
+
+                            <span>
+                                Seguimiento
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            id="notifications"
+                        >
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer>
+
+        <strong>
+            PrestamoFlow
+        </strong>
+
+
+        <span>
+            HTML · CSS · JavaScript · LocalStorage
+        </span>
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         MODAL CLIENTE
+    ====================================================== -->
+
+    <div
+        class="modal"
+        id="clientModal"
+    >
+
+        <div class="modal-box">
+
+            <button
+                class="close"
+                onclick="closeModal('clientModal')"
+            >
+                ×
+            </button>
+
+
+            <p class="overline">
+                CLIENTES
+            </p>
+
+
+            <h2 id="clientTitle">
+                Agregar cliente
+            </h2>
+
+
+            <form id="clientForm">
+
+                <input
+                    type="hidden"
+                    id="clientId"
+                >
+
+
+                <label>
+
+                    Nombre completo
+
+                    <input
+                        id="clientName"
+                        required
+                    >
+
+                </label>
+
+
+                <div class="two">
+
+                    <label>
+
+                        Documento
+
+                        <input
+                            id="clientDocument"
+                            required
+                        >
+
+                    </label>
+
+
+                    <label>
+
+                        Teléfono
+
+                        <input
+                            id="clientPhone"
+                        >
+
+                    </label>
+
+                </div>
+
+
+                <div class="two">
+
+                    <label>
+
+                        Correo
+
+                        <input
+                            id="clientEmail"
+                            type="email"
+                        >
+
+                    </label>
+
+
+                    <label>
+
+                        Dirección
+
+                        <input
+                            id="clientAddress"
+                        >
+
+                    </label>
+
+                </div>
+
+
+                <button
+                    class="gradient-button full"
+                    type="submit"
+                >
+                    Guardar cliente
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         MODAL PRÉSTAMO
+    ====================================================== -->
+
+    <div
+        class="modal"
+        id="loanModal"
+    >
+
+        <div class="modal-box">
+
+            <button
+                class="close"
+                onclick="closeModal('loanModal')"
+            >
+                ×
+            </button>
+
+
+            <p class="overline">
+                PRÉSTAMOS
+            </p>
+
+
+            <h2>
+                Crear préstamo
+            </h2>
+
+
+            <form id="loanForm">
+
+                <label>
+
+                    Cliente
+
+                    <select
+                        id="loanClient"
+                        required
+                    >
+                    </select>
+
+                </label>
+
+
+                <div class="two">
+
+                    <label>
+
+                        Capital
+
+                        <input
+                            id="loanAmount"
+                            type="number"
+                            min="1"
+                            required
+                        >
+
+                    </label>
+
+
+                    <label>
+
+                        Interés total (%)
+
+                        <input
+                            id="loanInterest"
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            required
+                        >
+
+                    </label>
+
+                </div>
+
+
+                <div class="two">
+
+                    <label>
+
+                        Número de cuotas
+
+                        <input
+                            id="loanTerm"
+                            type="number"
+                            min="1"
+                            required
+                        >
+
+                    </label>
+
+
+                    <label>
+
+                        Frecuencia
+
+                        <select
+                            id="loanFrequency"
+                        >
+
+                            <option>
+                                Mensual
+                            </option>
+
+                            <option>
+                                Quincenal
+                            </option>
+
+                            <option>
+                                Semanal
+                            </option>
+
+                        </select>
+
+                    </label>
+
+                </div>
+
+
+                <label>
+
+                    Fecha de inicio
+
+                    <input
+                        id="loanStart"
+                        type="date"
+                        required
+                    >
+
+                </label>
+
+
+                <div
+                    id="loanPreview"
+                    class="preview"
+                >
+                    Ingresa los datos para calcular la cuota.
+                </div>
+
+
+                <button
+                    class="gradient-button full"
+                    type="submit"
+                >
+                    Crear préstamo
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         MODAL PAGO
+    ====================================================== -->
+
+    <div
+        class="modal"
+        id="paymentModal"
+    >
+
+        <div class="modal-box">
+
+            <button
+                class="close"
+                onclick="closeModal('paymentModal')"
+            >
+                ×
+            </button>
+
+
+            <p class="overline">
+                COBRANZA
+            </p>
+
+
+            <h2>
+                Registrar pago
+            </h2>
+
+
+            <form id="paymentForm">
+
+                <label>
+
+                    Préstamo
+
+                    <select
+                        id="paymentLoan"
+                        required
+                    >
+                    </select>
+
+                </label>
+
+
+                <div class="two">
+
+                    <label>
+
+                        Valor
+
+                        <input
+                            id="paymentAmount"
+                            type="number"
+                            min="1"
+                            required
+                        >
+
+                    </label>
+
+
+                    <label>
+
+                        Fecha
+
+                        <input
+                            id="paymentDate"
+                            type="date"
+                            required
+                        >
+
+                    </label>
+
+                </div>
+
+
+                <label>
+
+                    Nota
+
+                    <input
+                        id="paymentNote"
+                        placeholder="Ej. Cuota 3"
+                    >
+
+                </label>
+
+
+                <div
+                    id="paymentPreview"
+                    class="preview"
+                >
+                </div>
+
+
+                <button
+                    class="gradient-button full"
+                    type="submit"
+                >
+                    Guardar pago
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+
+    <div
+        id="toast"
+        class="toast"
+    >
+    </div>
+
+
+
+    <script src="app.js"></script>
+
+</body>
+
+</html>
