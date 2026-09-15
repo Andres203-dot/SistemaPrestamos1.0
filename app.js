@@ -2,7 +2,8 @@
    CONFIGURACIÓN
 ===================================================== */
 
-const STORAGE_KEY = "prestamoflow_ihc";
+const API_URL = "/api/data";
+const LEGACY_STORAGE_KEY = "prestamoflow_ihc";
 
 
 let data = {
@@ -92,54 +93,81 @@ const safe = value => {
    LOCAL STORAGE
 ===================================================== */
 
-function saveData() {
+async function saveData() {
 
-    localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(data)
-    );
+    try {
+
+        const response = await fetch(
+            API_URL,
+            {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            }
+        );
+
+
+        if (!response.ok) {
+            throw new Error("No fue posible guardar los datos");
+        }
+
+    }
+
+    catch (error) {
+
+        console.error("Error guardando datos", error);
+        showMessage("No se pudo guardar en la base de datos");
+
+    }
 
 }
 
 
-function loadData() {
+async function loadData() {
 
-    const saved =
-        localStorage.getItem(
-            STORAGE_KEY
-        );
+    try {
+
+        const response = await fetch(API_URL);
 
 
-    if (saved) {
-
-        try {
-
-            data = JSON.parse(saved);
-
+        if (!response.ok) {
+            throw new Error("No fue posible cargar los datos");
         }
 
-        catch (error) {
 
-            console.error(
-                "Error leyendo datos",
-                error
-            );
+        data = await response.json();
 
+
+        if (data.clients.length === 0) {
+            const legacyData = localStorage.getItem(LEGACY_STORAGE_KEY);
+
+            if (legacyData) {
+                data = JSON.parse(legacyData);
+                await saveData();
+                localStorage.removeItem(LEGACY_STORAGE_KEY);
+                renderAll();
+                showMessage("Datos anteriores migrados a MySQL");
+                return;
+            }
+
+            restoreDemo(true);
+            return;
         }
+
+
+        renderAll();
 
     }
 
+    catch (error) {
 
-    if (
-        data.clients.length === 0
-    ) {
-
-        restoreDemo(true);
+        console.error("Error conectando con la base de datos", error);
+        renderAll();
+        showMessage("No se pudo conectar con la base de datos");
 
     }
-
-
-    renderAll();
 
 }
 
@@ -2640,6 +2668,44 @@ function toggleMenu() {
 }
 
 
+function applyTheme(theme) {
+
+    const isDark = theme === "dark";
+
+    document.body.classList.toggle("dark-mode", isDark);
+
+    const button = $("themeToggle");
+
+    if (!button) return;
+
+    button.querySelector("span").textContent =
+        isDark ? "☀" : "☾";
+
+    button.setAttribute(
+        "aria-label",
+        isDark ? "Activar modo claro" : "Activar modo oscuro"
+    );
+
+    button.setAttribute(
+        "title",
+        isDark ? "Activar modo claro" : "Activar modo oscuro"
+    );
+
+}
+
+
+function toggleTheme() {
+
+    const nextTheme = document.body.classList.contains("dark-mode")
+        ? "light"
+        : "dark";
+
+    localStorage.setItem("prestamosudc-theme", nextTheme);
+    applyTheme(nextTheme);
+
+}
+
+
 /* =====================================================
    MODALES
 ===================================================== */
@@ -2762,4 +2828,17 @@ document.addEventListener(
    INICIALIZAR
 ===================================================== */
 
+applyTheme(
+    localStorage.getItem("prestamosudc-theme") || "light"
+);
+
 loadData();
+
+setInterval(async () => {
+    try {
+        await loadData();
+    }
+    catch (error) {
+        console.error("Error actualizando datos", error);
+    }
+}, 5000);
