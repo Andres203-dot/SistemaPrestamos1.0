@@ -19,6 +19,8 @@
 
     --red: #e34b55;
 
+    --ease-out: cubic-bezier(.22, 1, .36, 1);
+
 }
 
 
@@ -40,7 +42,9 @@ body {
         Helvetica,
         sans-serif;
 
-    font-size: 14px;
+    font-size: 15px;
+
+    animation: pageReveal .6s var(--ease-out) both;
 
 }
 
@@ -95,7 +99,7 @@ button {
 
     font-weight: 800;
 
-    font-size: 15px;
+    font-size: 16px;
 
     white-space: nowrap;
 
@@ -147,7 +151,7 @@ button {
 
 .navbar nav a {
 
-    font-size: 10px;
+    font-size: 12px;
 
     text-decoration: none;
 
@@ -183,7 +187,7 @@ button {
 
     color: #6c6a73;
 
-    font-size: 10px;
+    font-size: 12px;
 
 }
 
@@ -204,12 +208,25 @@ button {
 
     padding: 10px 14px;
 
-    font-size: 10px;
+    font-size: 12px;
 
     font-weight: 800;
 
     box-shadow:
         0 8px 20px #9b469f20;
+
+    transition: transform .2s var(--ease-out), box-shadow .2s ease;
+
+}
+
+
+.top-button:hover,
+.gradient-button:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 25px #9b469f35;
 
 }
 
@@ -270,6 +287,8 @@ button {
     transform:
         rotate(-9deg)
         scale(1.05);
+
+    animation: heroDrift 16s ease-in-out infinite alternate;
 
 }
 
@@ -369,11 +388,22 @@ button {
 
     border-radius: 22px;
 
-    font-size: 10px;
+    font-size: 12px;
 
     font-weight: 700;
 
     backdrop-filter: blur(7px);
+
+    transition: transform .2s var(--ease-out), background .2s ease;
+
+}
+
+
+.category:hover {
+
+    transform: translateY(-2px);
+
+    background: #ffffff25;
 
 }
 
@@ -391,7 +421,7 @@ button {
 
 .hero-overline {
 
-    font-size: 9px;
+    font-size: 10px;
 
     font-weight: 800;
 
@@ -404,7 +434,7 @@ button {
 
 .hero h1 {
 
-    font-size: 28px;
+    font-size: 34px;
 
     line-height: 1.22;
 
@@ -436,7 +466,7 @@ button {
 
 .hero-description {
 
-    font-size: 10px;
+    font-size: 13px;
 
     line-height: 1.7;
 
@@ -496,7 +526,7 @@ button {
 
     padding: 0 9px;
 
-    font-size: 10px;
+    font-size: 12px;
 
     color: #333;
 
@@ -515,7 +545,7 @@ button {
 
     padding: 0 15px;
 
-    font-size: 9px;
+    font-size: 11px;
 
     font-weight: 800;
 
@@ -540,7 +570,7 @@ button {
 
     color: #ddd;
 
-    font-size: 9px;
+    font-size: 11px;
 
 }
 
@@ -558,7 +588,18 @@ button {
 
     padding: 5px 9px;
 
-    font-size: 8px;
+    font-size: 10px;
+
+    transition: background .2s ease, transform .2s var(--ease-out);
+
+}
+
+
+.trending button:hover {
+
+    background: #ffffff22;
+
+    transform: translateY(-2px);
 
 }
 
@@ -611,7 +652,7 @@ button {
 
 .overline {
 
-    font-size: 8px;
+    font-size: 10px;
 
     letter-spacing: 1.6px;
 
@@ -626,7 +667,7 @@ button {
 
 h2 {
 
-    font-size: 21px;
+    font-size: 24px;
 
     letter-spacing: -.5px;
 
@@ -637,7 +678,7 @@ h2 {
 
 .muted {
 
-    font-size: 10px;
+    font-size: 12px;
 
     color: #88858f;
 
@@ -668,9 +709,22 @@ h2 {
 
     padding: 10px 13px;
 
-    font-size: 9px;
+    font-size: 11px;
 
     font-weight: 700;
+
+    transition: border-color .2s ease, transform .2s var(--ease-out), background .2s ease;
+
+}
+
+
+.light-button:hover {
+
+    background: #faf8ff;
+
+    border-color: #c9b5f4;
+
+    transform: translateY(-2px);
 
 }
 
@@ -708,6 +762,24 @@ h2 {
     box-shadow:
         0 7px 20px #1a16300a;
 
+    animation: fadeUp .65s var(--ease-out) both;
+
+}
+
+
+.stat:nth-child(2) {
+    animation-delay: .08s;
+}
+
+
+.stat:nth-child(3) {
+    animation-delay: .16s;
+}
+
+
+.stat:nth-child(4) {
+    animation-delay: .24s;
+
 }
 
 
@@ -721,7 +793,7 @@ h2 {
 
     color: #85828c;
 
-    font-size: 9px;
+    font-size: 11px;
 
     font-weight: 700;
 
@@ -749,7 +821,7 @@ h2 {
 
 .stat-value {
 
-    font-size: 18px;
+    font-size: 21px;
 
     font-weight: 800;
 
@@ -760,7 +832,7 @@ h2 {
 
 .stat-note {
 
-    font-size: 8px;
+    font-size: 10px;
 
     color: #aaa;
 
@@ -788,6 +860,8 @@ h2 {
 
     box-shadow:
         0 7px 24px #1a163009;
+
+    animation: fadeUp .7s var(--ease-out) both;
 
 }
 
@@ -833,7 +907,7 @@ h2 {
 
     outline: none;
 
-    font-size: 9px;
+    font-size: 12px;
 
 }
 
@@ -854,7 +928,7 @@ h2 {
 
 .counter {
 
-    font-size: 8px;
+    font-size: 10px;
 
     color: #aaa;
 
@@ -888,7 +962,7 @@ h2 {
 
     padding: 7px 11px;
 
-    font-size: 8px;
+    font-size: 10px;
 
     font-weight: 700;
 
@@ -941,7 +1015,7 @@ td {
 
     text-align: left;
 
-    font-size: 9px;
+    font-size: 11px;
 
 }
 
@@ -956,7 +1030,7 @@ th {
 
     letter-spacing: .7px;
 
-    font-size: 7px;
+    font-size: 9px;
 
 }
 
@@ -988,7 +1062,7 @@ tr:last-child td {
 
     display: block;
 
-    font-size: 7px;
+    font-size: 9px;
 
     color: #aaa;
 
@@ -1007,7 +1081,7 @@ tr:last-child td {
 
     padding: 5px 8px;
 
-    font-size: 7px;
+    font-size: 9px;
 
     font-weight: 800;
 
@@ -1062,7 +1136,9 @@ tr:last-child td {
 
     border-radius: 6px;
 
-    font-size: 7px;
+    font-size: 9px;
+
+    transition: background .2s ease, transform .2s var(--ease-out);
 
     font-weight: 700;
 
@@ -1072,6 +1148,8 @@ tr:last-child td {
 .action:hover {
 
     background: #eceaf3;
+
+    transform: translateY(-1px);
 
 }
 
@@ -1123,7 +1201,7 @@ tr:last-child td {
 
     display: block;
 
-    font-size: 7px;
+    font-size: 10px;
 
     color: #999;
 
@@ -1134,7 +1212,7 @@ tr:last-child td {
 
     display: block;
 
-    font-size: 13px;
+    font-size: 15px;
 
     margin-top: 5px;
 
@@ -1179,7 +1257,7 @@ tr:last-child td {
 
     margin-bottom: 12px;
 
-    font-size: 9px;
+    font-size: 11px;
 
 }
 
@@ -1188,7 +1266,7 @@ tr:last-child td {
 
     color: #aaa;
 
-    font-size: 7px;
+    font-size: 9px;
 
 }
 
@@ -1227,7 +1305,7 @@ tr:last-child td {
 
     color: #777;
 
-    font-size: 7px;
+    font-size: 9px;
 
 }
 
@@ -1275,7 +1353,7 @@ tr:last-child td {
 
     color: #777;
 
-    font-size: 7px;
+    font-size: 9px;
 
 }
 
@@ -1346,7 +1424,7 @@ tr:last-child td {
 
     display: block;
 
-    font-size: 8px;
+    font-size: 10px;
 
     margin-bottom: 3px;
 
@@ -1355,7 +1433,7 @@ tr:last-child td {
 
 .notice span {
 
-    font-size: 7px;
+    font-size: 9px;
 
     color: #777;
 
@@ -1380,7 +1458,7 @@ footer {
 
     justify-content: space-between;
 
-    font-size: 8px;
+    font-size: 10px;
 
 }
 
@@ -1421,6 +1499,8 @@ footer strong {
 
     display: flex;
 
+    animation: modalBackdrop .25s ease both;
+
 }
 
 
@@ -1438,6 +1518,8 @@ footer strong {
 
     box-shadow:
         0 30px 80px #0005;
+
+    animation: modalEnter .35s var(--ease-out) both;
 
 }
 
@@ -1476,7 +1558,7 @@ footer strong {
 
 .modal-box label {
 
-    font-size: 8px;
+    font-size: 10px;
 
     color: #555;
 
@@ -1501,7 +1583,7 @@ footer strong {
 
     outline: none;
 
-    font-size: 9px;
+    font-size: 12px;
 
     background: white;
 
@@ -1548,7 +1630,7 @@ footer strong {
 
     padding: 10px;
 
-    font-size: 8px;
+    font-size: 10px;
 
     line-height: 1.6;
 
@@ -1575,7 +1657,7 @@ footer strong {
 
     border-radius: 8px;
 
-    font-size: 8px;
+    font-size: 10px;
 
     opacity: 0;
 
@@ -1593,6 +1675,93 @@ footer strong {
     opacity: 1;
 
     transform: none;
+
+}
+
+
+/* =====================================================
+   ANIMACIONES
+===================================================== */
+
+@keyframes pageReveal {
+
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+
+}
+
+
+@keyframes fadeUp {
+
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+@keyframes heroDrift {
+
+    from {
+        transform: rotate(-9deg) scale(1.05) translate3d(-1%, -1%, 0);
+    }
+
+    to {
+        transform: rotate(-7deg) scale(1.08) translate3d(1%, 1%, 0);
+    }
+
+}
+
+
+@keyframes modalBackdrop {
+
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+
+}
+
+
+@keyframes modalEnter {
+
+    from {
+        opacity: 0;
+        transform: translateY(18px) scale(.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+    }
 
 }
 
@@ -1710,7 +1879,7 @@ footer strong {
 
     .hero h1 {
 
-        font-size: 24px;
+        font-size: 28px;
 
     }
 
@@ -1778,5 +1947,139 @@ footer strong {
         gap: 7px;
 
     }
+
+}
+
+
+/* =====================================================
+   TEMA CLARO / OSCURO
+===================================================== */
+
+.theme-toggle {
+
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border: 1px solid #e2e1e7;
+    border-radius: 50%;
+    background: #faf9fc;
+    color: #403b4c;
+    font-size: 18px;
+    line-height: 1;
+    transition: transform .2s var(--ease-out), background .2s ease, color .2s ease;
+
+}
+
+
+.theme-toggle:hover {
+
+    transform: rotate(15deg) scale(1.08);
+    background: #f3edff;
+    color: var(--purple);
+
+}
+
+
+body.dark-mode {
+
+    background: #17151c;
+    color: #f4f1f8;
+
+}
+
+
+body.dark-mode .navbar,
+body.dark-mode .panel,
+body.dark-mode .stat,
+body.dark-mode .report-box,
+body.dark-mode .payment-card,
+body.dark-mode .modal-box {
+
+    background: #211e28;
+    border-color: #3a3544;
+
+}
+
+
+body.dark-mode .brand,
+body.dark-mode h2,
+body.dark-mode .name,
+body.dark-mode .report-title,
+body.dark-mode .modal-box label {
+
+    color: #f4f1f8;
+
+}
+
+
+body.dark-mode .navbar nav a,
+body.dark-mode .nav-search,
+body.dark-mode .sign-in,
+body.dark-mode .muted,
+body.dark-mode td,
+body.dark-mode .light-button,
+body.dark-mode .counter,
+body.dark-mode .legend,
+body.dark-mode .notice span {
+
+    color: #c1bbc9;
+
+}
+
+
+body.dark-mode .light-button,
+body.dark-mode .input,
+body.dark-mode .filter,
+body.dark-mode .action,
+body.dark-mode .theme-toggle,
+body.dark-mode .modal-box input,
+body.dark-mode .modal-box select {
+
+    background: #2a2633;
+    border-color: #494252;
+
+}
+
+
+body.dark-mode .input,
+body.dark-mode .modal-box input,
+body.dark-mode .modal-box select {
+
+    color: #f4f1f8;
+
+}
+
+
+body.dark-mode th {
+
+    background: #282430;
+    color: #aaa3b4;
+
+}
+
+
+body.dark-mode td,
+body.dark-mode .table-wrap,
+body.dark-mode .report-box,
+body.dark-mode .notice {
+
+    border-color: #3a3544;
+
+}
+
+
+body.dark-mode .notice,
+body.dark-mode .preview {
+
+    background: #2a2633;
+
+}
+
+
+body.dark-mode .close {
+
+    background: #342f3d;
+    color: #ded8e5;
 
 }
