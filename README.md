@@ -9,6 +9,9 @@ La aplicación permite:
 - Registrar clientes con datos básicos como nombre, documento, teléfono, correo y dirección.
 - Crear y consultar préstamos asociados a un cliente.
 - Definir montos, interés, plazo, frecuencia, fecha de inicio y fecha de vencimiento.
+- Consultar calendario de cuotas, abonos aplicados y vencimientos, con filtros por cliente, fecha, saldo y estado.
+- Registrar abonos parciales o anticipados; se aplican primero a las cuotas pendientes más antiguas.
+- Preparar recordatorios editables para WhatsApp, correo o SMS y generar recibos imprimibles o guardables como PDF.
 - Registrar pagos realizados sobre cada préstamo.
 - Visualizar estadísticas del estado financiero de la cartera.
 - Mantener sincronización entre el frontend y la base de datos mediante la API REST `/api/data`.
@@ -34,8 +37,10 @@ La aplicación permite:
 - `server.js`: configuración del servidor Express y endpoints de la API.
 - `schema.sql`: script SQL para crear la base de datos y tablas.
 - `App.js`: lógica del frontend, renderizado y gestión de datos.
+- `schedule.js`: cálculo de vencimientos, cuotas y aplicación de abonos.
 - `index.html`: interfaz principal de la aplicación.
 - `Style.css`: estilos visuales del sistema.
+- `manifest.webmanifest`, `service-worker.js` e `icon-*`: instalación PWA y caché segura de la interfaz.
 - `.env.example`: ejemplo de variables de entorno.
 
 ## Instalación
@@ -69,9 +74,14 @@ La aplicación permite:
    DB_HOST=localhost
    DB_PORT=3306
    DB_NAME=prestamosudc
-   DB_USER=root
+   DB_USER=usuario_mysql
    DB_PASSWORD=tu_password
+   ADMIN_USER=usuario_administrador
+   ADMIN_PASSWORD=elige_una_clave_segura
+   AUTH_SECRET=un_secreto_aleatorio_largo
    ```
+
+El acceso administrativo usa `ADMIN_USER` y `ADMIN_PASSWORD`. Define también `AUTH_SECRET` con una cadena aleatoria larga para firmar la sesión. No uses la cuenta MySQL `root` ni compartas el archivo `.env`. La cookie de sesión dura 8 horas y la API de datos requiere autenticación.
 
 5. Inicia la aplicación:
 
@@ -84,6 +94,25 @@ La aplicación permite:
    ```text
    http://localhost:3000
    ```
+
+Abre la aplicación desde el servidor Node en el puerto 3000 para que los cambios se guarden en MySQL. Si usas la extensión Live Server en el puerto 5500, también debes mantener activo el backend Node en el puerto 3000; Live Server por sí solo no guarda los datos.
+
+## Uso desde celulares e instalación
+
+PrestamosUDC incluye una interfaz adaptable y puede instalarse como aplicación web progresiva (PWA). Para probarla desde un celular conectado a la misma red Wi-Fi:
+
+1. Inicia el servidor con `npm start`.
+2. Averigua la dirección IP local del computador y abre `http://<IP-DEL-COMPUTADOR>:3000` en el celular. El servidor escucha en las interfaces de red; si no conecta, permite el puerto 3000 en el firewall de la red privada.
+3. Para instalarla en producción, publica el servidor detrás de HTTPS y usa un dominio accesible desde el celular. HTTPS es necesario para habilitar la instalación PWA fuera de `localhost`.
+4. En Android, abre el menú del navegador y selecciona **Instalar aplicación** o **Añadir a pantalla de inicio**. En iPhone, abre el sitio en Safari, toca **Compartir** y selecciona **Añadir a pantalla de inicio**.
+
+La PWA guarda únicamente los archivos públicos de la interfaz para poder abrir la pantalla de inicio sin conexión. La sesión, los clientes, los préstamos, los pagos y las respuestas de la API no se guardan en la caché; para iniciar sesión y gestionar datos se necesita conexión al servidor.
+
+En producción, configura `NODE_ENV=production`, credenciales propias y una conexión MySQL accesible de forma privada desde el servidor. No expongas MySQL a Internet. Para probar en la red local por HTTP se puede acceder a la web, pero los navegadores normalmente no permiten instalarla como PWA desde una dirección IP HTTP.
+
+En Windows PowerShell, si la política local bloquea `npm.ps1`, ejecuta los comandos de npm como `npm.cmd start`.
+
+Al registrar un pago se puede seleccionar quién realizó el abono. El pagador se propone inicialmente como el titular del préstamo, pero puede elegirse otro cliente. En la primera lectura o escritura autenticada, el servidor agrega la columna de pagador si falta y asigna los pagos anteriores al titular de su préstamo.
 
 ## Configuración de la base de datos
 
@@ -212,19 +241,7 @@ Respuesta esperada:
 
 ### PUT `/api/data`
 
-Recibe un payload con clientes, préstamos y pagos para reemplazar el contenido completo de la base de datos dentro de una transacción.
-
-Flujo interno:
-
-1. Elimina pagos
-2. Elimina préstamos
-3. Elimina clientes
-4. Inserta clientes
-5. Inserta préstamos
-6. Inserta pagos
-7. Confirma la transacción
-
-Esto permite sincronizar el estado del frontend con MySQL.
+Recibe clientes, préstamos y pagos para guardarlos o actualizarlos dentro de una transacción. Los registros existentes no se borran en cada guardado. Las eliminaciones solicitadas se envían explícitamente en `deleted`; las relaciones de cliente/préstamo eliminan sus pagos dependientes en cascada.
 
 ## Reglas de negocio importantes
 
@@ -266,6 +283,20 @@ Modo desarrollo con recarga automática:
 ```bash
 npm run dev
 ```
+
+Ejecutar pruebas automatizadas:
+
+```bash
+npm test
+```
+
+Las pruebas automatizadas no requieren MySQL; verifican autenticación, validación de datos y fechas. La integración completa de persistencia debe comprobarse con una instancia MySQL configurada.
+
+## Manuales
+
+- [Manual de usuario](docs/manual-usuario.md): inicio de sesión, clientes, préstamos, pagos y reportes.
+- [Manual técnico](docs/manual-tecnico.md): instalación, configuración, API, pruebas y operación.
+- [Documentación de la base de datos](docs/base-de-datos.md): tablas, restricciones y relaciones.
 
 ## Nota importante
 
